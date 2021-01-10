@@ -32,8 +32,8 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       .replace(/%week/g, week)
       .replace(/%date/g, date)
       .replace(/%time/g, time): `
-🤖 [NFQ BOT] 🤖
-Created Bye: @Drawl Nag
+🤖 [F3RD BOT] 🤖
+Created Bye: @ferdiardian
 
 Hi, ${name} 👋
 Exp: ${exp}
@@ -92,18 +92,18 @@ Cara Tambah XP:
 ╠➥ ${_p}mutechat group
 ║
 ╠═〘 IKLAN 〙 ═
-╠➥ Instagram: @arpunchs
-╠➥ Github: https://github.com/Arya274/Arya-Bot
+╠➥ Instagram: @ferdi_ardian21
+╠➥ Github: https://github.com/ferdboy/tes-Bot
 ║
 ╠═〘 Info Bot 〙 ═
-╠➥ Name : NFQ BOT
+╠➥ Name : F3RD BOT
 ╠➥ Coded using *Nano* on Android \\w Termux
-╠➥ Request? Wa.me/6288235435804
+╠➥ Request? Wa.me/6282169369877
 ╠═════
 ║ Advanced:
 ║  > return m
 ║
-╠═〘 NfQ BOT 〙═
+╠═〘 F3RD BOT 〙═
 `.trim()
     conn.reply(m.chat, {...preview, text}, m)
   }
