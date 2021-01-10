@@ -130,7 +130,19 @@ global.dfail = (type, m, conn) => {
     group: 'Perintah ini hanya dapat digunakan di Grup!',
     private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
     admin: 'Perintah ini hanya untuk admin grup!',
-    botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!'
+    botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!',
+    P: 'Ya Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Assalamualaikum: 'Waalaikumsalam Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Hi: 'Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Hy: 'Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Hai: 'Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Woe: 'Apa???😈',
+    Woi: 'Apa???👾',
+    Oke bot: 'Baik Broo👾',
+    Bot: 'Aku Bot nya Ferdi ada apa? Untuk melihat menu ketik #menu',
+    Makasi: 'Sama sama♥️',
+    Makasih: 'Sama sama♥️',
+    Bro: 'Ya bro?😈',
   }[type]
   msg && conn.reply(m.chat, msg, m)
 }
