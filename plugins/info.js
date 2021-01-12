@@ -22,7 +22,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 ║
 ║>Request? Wa.me/6282169369877
 ║
-╠═〘 NfQ BOT 〙 ═
+╠═〘 F3RD BOT 〙 ═
 `.trim(), m)
 }
 handler.command = /^(info)$/i
