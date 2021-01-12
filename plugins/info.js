@@ -1,28 +1,10 @@
 let handler  = async (m, { conn, usedPrefix: _p }) => {
   conn.reply(m.chat, `
-╠═〘 INFO BOT 〙 ═
-╠➥ Dibuat dengan bahasa javascript via NodeJs
-╠➥ Rec: F3RD Bot
-╠➥ Script: @Ferdiardian
-║
-╠➥ Github: https://github.com/ferdboy/tes-Bot
-╠➥ Instagram: @ferdi_ardian21
-╠➥ YouTube: NOTHING
-║
-╠═〘 Thanks To 〙 ═
-╠➥ Ahmad Sururi
-╠➥ Abdul Jamil
-╠➥ Mustapa Harun
-╠➥ Dan kawan yang lain :)
-║
-╠═〘 DONASI 〙 ═
-╠➥ SmartFren: Nothing
-╠➥ Tsel: 0821-6936-9877
-╠➥ M3: NOTHING
-║
-║>Request? Wa.me/6282169369877
-║
-╠═〘 F3RD BOT 〙 ═
+me = client.user
+					uptime = process.uptime()
+					teks = `*Nama bot* : ${me.name}\n*OWNER* : *FERDI ARDIAN*\n*AUTHOR* : *F4S XD*\n*Nomor Bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Total Block Contact* : ${blocked.length}\n*The bot is active on* : ${kyun(uptime)}`
+					buffer = await getBuffer(me.imgUrl)
+					client.sendMessage(from, buffer, image, {caption: teks, contextInfo:{mentionedJid: [me.jid]}})
 `.trim(), m)
 }
 handler.command = /^(info)$/i
