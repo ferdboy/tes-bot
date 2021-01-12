@@ -71,25 +71,25 @@ conn.handler = async function (m) {
         let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
         let fail = plugin.fail || global.dfail
         if (plugin.owner && !isOwner) {
-          fail('owner', m, this)
+          fail('6282169369877', m, this)
           continue
         }
         if (plugin.mods && !isMods) {
-          fail('mods', m, this)
+          fail('6282169369877', m, this)
           continue
         }
         if (plugin.premium && !isPrems) {
-          fail('premium', m, this)
+          fail('6282169369877', m, this)
           continue
         }
   			if (plugin.group && !m.isGroup) {
           fail('group', m, this)
           continue
         } else if (plugin.botAdmin && !isBotAdmin) {
-          fail('botAdmin', m, this)
+          fail('6282169369877', m, this)
           continue
         } else if (plugin.admin && !isAdmin) {
-          fail('admin', m, this)
+          fail('6282169369877', m, this)
           continue
         }
   			if (plugin.private && m.isGroup) {
