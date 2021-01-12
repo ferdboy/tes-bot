@@ -62,6 +62,9 @@ conn.handler = async function (m) {
         plugin.command instanceof Array ? plugin.command.includes(command) :
         plugin.command instanceof String ? plugin.command == command : false
   			if (!isAccept) continue
+const botNumber = client.user.jid
+	const owner = ["6282169369877@s.whatsapp.net"] // replace this with your number
+	const adminbot = ["6282169369877@s.whatsapp.net"]
         let isMods = isOwner || global.mods.includes(m.sender)
         let isPrems = isMods || global.prems.includes(m.sender)
         let participants = m.isGroup ? (await this.groupMetadata(m.chat)).participants : []
