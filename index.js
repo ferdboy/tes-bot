@@ -173,7 +173,8 @@ fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
       global.plugins[filename] = require(dir)
     } catch (e) {
       conn.logger.error(e)
-    }else if (text == 'p'){
+    }
+else if (text == 'p'){
 conn.sendMessage(id, 'Ya?, Ketik .help/.info/.donasi Contoh .help' ,MessageType.text);
 }
 else if (text == 'P'){
