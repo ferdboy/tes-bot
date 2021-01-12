@@ -73,8 +73,107 @@ conn.handler = async function (m) {
         if (plugin.owner && !isOwner) {
           fail('owner', m, this)
           continue
+        }
+        if (plugin.mods && !isMods) {
+          fail('mods', m, this)
+          continue
+        }
+        if (plugin.premium && !isPrems) {
+          fail('premium', m, this)
+          continue
+        }
+  			if (plugin.group && !m.isGroup) {
+          fail('group', m, this)
+          continue
+        } else if (plugin.botAdmin && !isBotAdmin) {
+          fail('botAdmin', m, this)
+          continue
+        } else if (plugin.admin && !isAdmin) {
+          fail('admin', m, this)
+          continue
+        }
+  			if (plugin.private && m.isGroup) {
+          fail('private', m, this)
+          continue
+        }
 
-else if (text == 'p'){
+        m.isCommand = true
+        m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
+        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
+  			break
+  		}
+  	}
+  } finally {
+    //console.log(global.DATABASE._data.users[m.sender])
+    if (m && m.sender && global.DATABASE._data.users[m.sender]) {
+      global.DATABASE._data.users[m.sender].exp += m.exp
+    }
+    try {
+      await global.DATABASE.save()
+      require('./lib/print')(m, this)
+    } catch (e) {
+      console.log(m, e)
+    }
+  }
+}
+
+conn.on('message-new', conn.handler) 
+conn.on('error', conn.logger.error)
+global.mods = []
+global.prems = []
+
+global.dfail = (type, m, conn) => {
+  let msg = {
+    owner: 'Perintah ini hanya dapat digunakan oleh Owner Nomor!',
+    mods: 'Perintah ini hanya dapat digunakan oleh Moderator!',
+    premium: 'Perintah ini hanya untuk member Premium!',
+    group: 'Perintah ini hanya dapat digunakan di Grup!',
+    private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
+    admin: 'Perintah ini hanya untuk admin grup!',
+    botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!'
+  }[type]
+  msg && conn.reply(m.chat, msg, m)
+}
+
+!opts['test'] && conn.connect().then(() => {
+  global.timestamp.connect = new Date
+})
+opts['test'] && process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
+process.on('uncaughtException', console.error)
+// let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
+
+let pluginFilter = filename => /\.js$/.test(filename)
+global.plugins = Object.fromEntries(
+  fs.readdirSync(path.join(__dirname, 'plugins'))
+    .filter(pluginFilter)
+    .map(filename => [filename, {}])
+)
+for (let filename in global.plugins) {
+  try {
+    global.plugins[filename] = require('./plugins/' + filename)
+  } catch (e) {
+    conn.logger.error(e)
+    delete global.plugins[filename]
+  }
+}
+console.log(global.plugins)
+fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
+  if (pluginFilter(filename)) {
+    let dir = './plugins/' + filename
+    if (delete require.cache[require.resolve(dir)]) {
+      if (fs.existsSync(require.resolve(dir))) conn.logger.info(`re - require plugin '${dir}'`)
+      else {
+        conn.logger.warn(`deleted plugin '${dir}'`)
+        return delete global.plugins[filename]
+      }
+    } else conn.logger.info(`requiring new plugin '${dir}'`)
+    let err = syntaxerror(fs.readFileSync(dir))
+    if (err) conn.logger.error(`syntax error while loading '${dir}'\n${err}`)
+    else try {
+      global.plugins[filename] = require(dir)
+    } catch (e) {
+      conn.logger.error(e)
+    }else if (text == 'p'){
 conn.sendMessage(id, 'Ya?, Ketik .help/.info/.donasi Contoh .help' ,MessageType.text);
 }
 else if (text == 'P'){
@@ -209,107 +308,5 @@ conn.sendMessage(id, 'Sama sama, semoga harimu menyenangkan :)' ,MessageType.tex
 else if (text == 'Thanks'){
 conn.sendMessage(id, 'Sama sama, semoga harimu menyenangkan :)' ,MessageType.text);
 }
-
-        }
-        if (plugin.mods && !isMods) {
-          fail('mods', m, this)
-          continue
-        }
-        if (plugin.premium && !isPrems) {
-          fail('premium', m, this)
-          continue
-        }
-  			if (plugin.group && !m.isGroup) {
-          fail('group', m, this)
-          continue
-        } else if (plugin.botAdmin && !isBotAdmin) {
-          fail('botAdmin', m, this)
-          continue
-        } else if (plugin.admin && !isAdmin) {
-          fail('admin', m, this)
-          continue
-        }
-  			if (plugin.private && m.isGroup) {
-          fail('private', m, this)
-          continue
-        }
-
-        m.isCommand = true
-        m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
-        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
-  			break
-  		}
-  	}
-  } finally {
-    //console.log(global.DATABASE._data.users[m.sender])
-    if (m && m.sender && global.DATABASE._data.users[m.sender]) {
-      global.DATABASE._data.users[m.sender].exp += m.exp
-    }
-    try {
-      await global.DATABASE.save()
-      require('./lib/print')(m, this)
-    } catch (e) {
-      console.log(m, e)
-    }
-  }
-}
-
-conn.on('message-new', conn.handler) 
-conn.on('error', conn.logger.error)
-global.mods = []
-global.prems = []
-
-global.dfail = (type, m, conn) => {
-  let msg = {
-    owner: 'Perintah ini hanya dapat digunakan oleh Owner Nomor!',
-    mods: 'Perintah ini hanya dapat digunakan oleh Moderator!',
-    premium: 'Perintah ini hanya untuk member Premium!',
-    group: 'Perintah ini hanya dapat digunakan di Grup!',
-    private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
-    admin: 'Perintah ini hanya untuk admin grup!',
-    botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!'
-  }[type]
-  msg && conn.reply(m.chat, msg, m)
-}
-
-!opts['test'] && conn.connect().then(() => {
-  global.timestamp.connect = new Date
-})
-opts['test'] && process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
-process.on('uncaughtException', console.error)
-// let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
-
-let pluginFilter = filename => /\.js$/.test(filename)
-global.plugins = Object.fromEntries(
-  fs.readdirSync(path.join(__dirname, 'plugins'))
-    .filter(pluginFilter)
-    .map(filename => [filename, {}])
-)
-for (let filename in global.plugins) {
-  try {
-    global.plugins[filename] = require('./plugins/' + filename)
-  } catch (e) {
-    conn.logger.error(e)
-    delete global.plugins[filename]
-  }
-}
-console.log(global.plugins)
-fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
-  if (pluginFilter(filename)) {
-    let dir = './plugins/' + filename
-    if (delete require.cache[require.resolve(dir)]) {
-      if (fs.existsSync(require.resolve(dir))) conn.logger.info(`re - require plugin '${dir}'`)
-      else {
-        conn.logger.warn(`deleted plugin '${dir}'`)
-        return delete global.plugins[filename]
-      }
-    } else conn.logger.info(`requiring new plugin '${dir}'`)
-    let err = syntaxerror(fs.readFileSync(dir))
-    if (err) conn.logger.error(`syntax error while loading '${dir}'\n${err}`)
-    else try {
-      global.plugins[filename] = require(dir)
-    } catch (e) {
-      conn.logger.error(e)
-    }
   }
 })
